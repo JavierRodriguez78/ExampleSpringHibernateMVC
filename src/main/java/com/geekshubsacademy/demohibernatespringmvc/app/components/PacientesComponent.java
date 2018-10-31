@@ -14,7 +14,7 @@ import java.util.List;
 @Qualifier("PacientesComponent")
 public class PacientesComponent {
 
-    private static final Log logger = LogFactory.getLog("InitController.class");
+    private static final Log logger = LogFactory.getLog("PacienteComponent.class");
 
     @Autowired
     private IPacienteService pacienteService;
@@ -25,6 +25,7 @@ public class PacientesComponent {
 
     public List<Pacientes> allPacientes()
     {
+        logger.info(pacienteService.findAll());
         return pacienteService.findAll();
     }
 
