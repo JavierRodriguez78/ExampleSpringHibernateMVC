@@ -5,17 +5,26 @@ import com.geekshubsacademy.demohibernatespringmvc.domain.entities.Pacientes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 @Controller
+@SessionAttributes("paciente")
 public class InitController {
     private static final Log logger = LogFactory.getLog("InitController.class");
     @Autowired
@@ -36,20 +45,27 @@ public class InitController {
     }
 
     @GetMapping("/addpatient")
-    public ModelAndView addPaciente(){
-        Pacientes paciente = new Pacientes();
-
-        ModelAndView mv = new ModelAndView("addpatient");
-        mv.addObject("paciente", paciente);
-        mv.addObject("titulo","Añadir paciente");
-        return mv;
+    public String addPaciente(Map<String, Object> model){
+               model.put("paciente",pacientesComponent.crearPaciente());
+               model.put("titulo","Añadir paciente");
+              return "addpatient";
     }
 
     @PostMapping("/addpatient")
-    public ModelAndView savePatient(Pacientes paciente){
-        logger.info(paciente);
-        ModelAndView mv = new ModelAndView("patients");
-        return mv;
+    public String savePatient(@Valid Pacientes paciente, Model model, BindingResult result, RedirectAttributes flash, SessionStatus status){
+        if(result.hasErrors()){
+            logger.info("El formulario tiene errores");
+            model.addAttribute("titulo","Añadir Paciente");
+            return "addpatient";
+        }
+        pacientesComponent.addPaciente(paciente);
+        return "redirect:/pacientes";
+    }
+
+    @GetMapping(value="/addpatient/{id}")
+    public String editar(@PathVariable Long id) {
+        logger.info(pacientesComponent.getPatientById(id));
+        return "addpatient";
     }
 
     @GetMapping("/add")

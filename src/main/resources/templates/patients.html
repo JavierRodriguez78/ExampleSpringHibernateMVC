@@ -25,6 +25,7 @@
                     <td th:text="${paciente.historiaClinica}"></td>
                     <td th:text="${paciente.nombre}"></td>
                     <td th:text="${paciente.apellido}"></td>
+                    <td><a class="btn btn-primary btn-xs" th:href="@{/addpatient/}+${paciente.id}" th:text="'editar'"></a></td>
                 </tr>
             </tbody>
         </table>

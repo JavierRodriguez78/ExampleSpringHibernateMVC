@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.rmi.server.UID;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Qualifier("PacientesComponent")
@@ -19,6 +24,17 @@ public class PacientesComponent {
     @Autowired
     private IPacienteService pacienteService;
 
+
+    public Pacientes crearPaciente(){
+        Pacientes paciente = new Pacientes();
+        paciente.setHistoriaClinica(UidGen());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        dateFormat.format(date);
+        paciente.setCreatedAt(date);
+        return paciente;
+
+    }
     public void addPaciente ( Pacientes paciente){
         pacienteService.save(paciente);
     }
@@ -29,5 +45,14 @@ public class PacientesComponent {
         return pacienteService.findAll();
     }
 
+    public Optional<Pacientes> getPatientById(Long id){
+        return pacienteService.findOne(id);
+    }
+
+
+    private String UidGen(){
+        UID uid = new UID();
+        return "hist"+uid;
+    }
 
 }
