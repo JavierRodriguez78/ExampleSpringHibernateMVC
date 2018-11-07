@@ -26,6 +26,7 @@
                     <td th:text="${paciente.nombre}"></td>
                     <td th:text="${paciente.apellido}"></td>
                     <td><a class="btn btn-primary btn-xs" th:href="@{/addpatient/}+${paciente.id}" th:text="'editar'"></a></td>
+                    <td><a class="btn btn-danger btn-xs" th:href="@{/delete/}+${paciente.id}" th:text="'Eliminar'" onclick="return confirm('Estas Seguro que quieres Eliminar?');"></a>  </td>
                 </tr>
             </tbody>
         </table>

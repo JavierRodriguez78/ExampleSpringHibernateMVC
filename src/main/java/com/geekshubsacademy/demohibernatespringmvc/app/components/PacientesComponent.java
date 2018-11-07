@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.rmi.server.UID;
 import java.text.DateFormat;
@@ -49,6 +50,16 @@ public class PacientesComponent {
         return pacienteService.findOne(id);
     }
 
+
+    public RedirectAttributes deletePatient(Long id,         RedirectAttributes flash)
+    {
+        if (id > 0) {
+            pacienteService.delete(id);
+            return flash.addFlashAttribute("success","Se ha  adecuadamente");
+
+        }
+        return flash.addFlashAttribute("error","No se ha podido eliminar!");
+    }
 
     private String UidGen(){
         UID uid = new UID();
