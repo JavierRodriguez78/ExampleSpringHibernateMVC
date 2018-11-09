@@ -62,12 +62,12 @@ public class InitController {
 
     @GetMapping(value="/addpatient/{id}")
     public String editar(@PathVariable Long id, Map<String, Object> model, RedirectAttributes flash) {
-        Optional<Pacientes> paciente = null;
+        Pacientes paciente = null;
 
         if (id > 0) {
             paciente = pacientesComponent.getPatientById(id);
             logger.info("Paciente devuelto->"+paciente);
-            if(paciente.equals(Optional.empty())){
+            if(paciente == null){
                 flash.addFlashAttribute("error", "El ID del Paciente no existen en la BD");
                 return "redirect:/pacientes";
             }

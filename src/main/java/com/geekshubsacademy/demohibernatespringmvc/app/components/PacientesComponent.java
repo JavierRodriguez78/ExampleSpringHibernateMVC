@@ -36,6 +36,16 @@ public class PacientesComponent {
         return paciente;
 
     }
+
+
+    public Pacientes crearPaciente(Pacientes paciente){
+        paciente.setHistoriaClinica(UidGen());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        dateFormat.format(date);
+        paciente.setCreatedAt(date);
+        return paciente;
+    }
     public void addPaciente ( Pacientes paciente){
         pacienteService.save(paciente);
     }
@@ -46,10 +56,24 @@ public class PacientesComponent {
         return pacienteService.findAll();
     }
 
-    public Optional<Pacientes> getPatientById(Long id){
-        return pacienteService.findOne(id);
+    public Pacientes getPatientById(Long id){
+
+        Optional<Pacientes>  OptPaciente = pacienteService.findOne(id);
+        if(OptPaciente.get()==null) {
+            return null;
+        }
+        return OptPaciente.get();
+
     }
 
+    public boolean deletePatient(Long id)
+    {
+        if (id > 0) {
+            pacienteService.delete(id);
+            return true;
+        }
+        return false;
+    }
 
     public RedirectAttributes deletePatient(Long id,         RedirectAttributes flash)
     {
