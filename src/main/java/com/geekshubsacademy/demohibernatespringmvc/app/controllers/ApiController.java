@@ -1,6 +1,8 @@
 package com.geekshubsacademy.demohibernatespringmvc.app.controllers;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.geekshubsacademy.demohibernatespringmvc.app.components.MedicosComponent;
 import com.geekshubsacademy.demohibernatespringmvc.app.components.PacientesComponent;
+import com.geekshubsacademy.demohibernatespringmvc.domain.entities.Medicos;
 import com.geekshubsacademy.demohibernatespringmvc.domain.entities.Pacientes;
 import net.minidev.json.JSONObject;
 import org.apache.commons.logging.Log;
@@ -21,6 +23,61 @@ public class ApiController {
     private static final Log logger = LogFactory.getLog("ApiController.class");
     @Autowired
     private PacientesComponent pacientesComponent;
+
+    @Autowired
+    private MedicosComponent medicosComponent;
+
+
+
+    @RequestMapping(value="medicos",method= RequestMethod.GET, produces="application/json")
+    public ResponseEntity<List<Medicos>> getMedicos(){
+        List<Medicos> list = medicosComponent.getAllMedicos();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="medicos", method=RequestMethod.POST)
+    public ResponseEntity<Void> addMedico(@RequestBody Medicos medico, UriComponentsBuilder builder)
+    {
+        logger.info(medico);
+        //medico = Component.crearPaciente(paciente);
+        medicosComponent.addMedico(medico);
+        return new ResponseEntity<Void>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value="medicos/{id}", method= RequestMethod.GET, produces="application/json")
+    public ResponseEntity<Medicos> getMedico(@PathVariable Long id){
+        logger.info("El id recibido es ->"+ id);
+        Medicos medico;
+        medico = medicosComponent.getMedicoById(id);
+        return new ResponseEntity<>(medico, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value="medicos/{id}", method= RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteMedico(@PathVariable Long id){
+        boolean flag = medicosComponent.deleteMedico(id);
+        if(flag==false){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value="medicos/{id}", method=RequestMethod.PUT)
+    public ResponseEntity<Void> editMedico (@PathVariable Long id, @RequestBody Medicos medico, UriComponentsBuilder builder)
+    {
+        Medicos medicoResult = medicosComponent.getMedicoById(id);
+
+        if(medicoResult==null) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        medicoResult.setApellido(medico.getApellido());
+        medicoResult.setNombre(medico.getNombre());
+        medicoResult.setEspecialidad(medico.getEspecialidad());
+        medicosComponent.addMedico(medicoResult);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+
 
     @RequestMapping(value="pacientes",method= RequestMethod.GET, produces="application/json")
     public ResponseEntity<List<Pacientes>> getPatients(){

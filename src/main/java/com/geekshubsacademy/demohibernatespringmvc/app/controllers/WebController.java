@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Controller
 @SessionAttributes("paciente")
-public class InitController {
+public class WebController {
     private static final Log logger = LogFactory.getLog("InitController.class");
     @Autowired
     private PacientesComponent pacientesComponent;
