@@ -105,4 +105,11 @@ public class WebController {
         flash = pacientesComponent.deletePatient(id, flash);
         return "redirect:/pacientes";
     }
+
+    @GetMapping("login")
+    public ModelAndView login(){
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("custom-login");
+        return mav;
+    }
 }
