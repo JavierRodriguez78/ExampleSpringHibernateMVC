@@ -1,11 +1,10 @@
-package com.geekshubsacademy.demohibernatespringmvc.app.controllers;
+package com.geekshubsacademy.demohibernatespringmvc.app.controllers.web;
 
 import com.geekshubsacademy.demohibernatespringmvc.app.components.PacientesComponent;
 import com.geekshubsacademy.demohibernatespringmvc.domain.entities.Pacientes;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,26 +18,22 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
+@RequestMapping("app/secure")
 @SessionAttributes("paciente")
-public class WebController {
-    private static final Log logger = LogFactory.getLog("InitController.class");
+public class PrivateController {
     @Autowired
     private PacientesComponent pacientesComponent;
 
-
-
-/*
-    @GetMapping("/app/secure/home")
+    private static final Log logger = LogFactory.getLog("PrivateController.class");
+    @GetMapping("/home")
     public ModelAndView home(){
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("titulo","Añadir Paciente");
         return mv;
-    }*/
+    }
 
-/*
     @GetMapping("/pacientes")
     public ModelAndView pacientes(){
         ModelAndView mv= new ModelAndView("patients");
@@ -48,9 +43,9 @@ public class WebController {
 
     @GetMapping("/addpatient")
     public String addPaciente(Map<String, Object> model){
-               model.put("paciente",pacientesComponent.crearPaciente());
-               model.put("titulo","Añadir paciente");
-              return "addpatient";
+        model.put("paciente",pacientesComponent.crearPaciente());
+        model.put("titulo","Añadir paciente");
+        return "addpatient";
     }
 
     @PostMapping("/addpatient")
@@ -61,7 +56,7 @@ public class WebController {
             return "addpatient";
         }
         pacientesComponent.addPaciente(paciente);
-        return "redirect:/pacientes";
+        return "redirect:/app/secure/pacientes";
     }
 
     @GetMapping(value="/addpatient/{id}")
@@ -73,11 +68,11 @@ public class WebController {
             logger.info("Paciente devuelto->"+paciente);
             if(paciente == null){
                 flash.addFlashAttribute("error", "El ID del Paciente no existen en la BD");
-                return "redirect:/pacientes";
+                return "redirect:/app/secure/pacientes";
             }
         } else{
             flash.addFlashAttribute("error", "El ID del Paciente no puede ser igual o menor a 0");
-            return "redirect:/pacientes";
+            return "redirect:/app/secure/pacientes";
         }
         model.put("paciente", paciente);
         model.put("titulo", "Editar paciente");
@@ -107,14 +102,7 @@ public class WebController {
     public String eliminar(@PathVariable(value="id") Long id, RedirectAttributes flash){
 
         flash = pacientesComponent.deletePatient(id, flash);
-        return "redirect:/pacientes";
+        return "redirect:/app/secure/pacientes";
     }
 
-    /*
-    @GetMapping("login")
-    public ModelAndView login(){
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("custom-login");
-        return mav;
-    }*/
 }

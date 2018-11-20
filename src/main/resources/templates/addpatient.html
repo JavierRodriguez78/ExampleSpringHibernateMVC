@@ -15,7 +15,7 @@
                         th:text="${err}"></li>
                 </ul>
             </div>
-            <form th:action="@{/addpatient}" th:object="${paciente}" method="post">
+            <form th:action="@{/app/secure/addpatient}" th:object="${paciente}" method="POST">
                 <div class="form-group row">
                     <label for="historiaClinica" class="col-sm-2 col-form-label">Historia Clinica</label>
                     <div class="col-sm-6">

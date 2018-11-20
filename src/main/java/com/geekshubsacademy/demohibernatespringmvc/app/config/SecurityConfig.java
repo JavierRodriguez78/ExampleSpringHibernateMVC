@@ -21,18 +21,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers("/app/secure/**")
-                .hasAnyRole("ADMIN","USER")
+                .hasAnyRole("PEPE")
                 .and().formLogin()
-                .loginPage("/login")
+                .loginPage("/")
                 .loginProcessingUrl("/app-login")
                 .usernameParameter("app_username")
                 .passwordParameter("app_password")
                 .defaultSuccessUrl("/app/secure/home")
                 .and().logout()
                 .logoutUrl("/app-logout")
-                .logoutSuccessUrl("/app/login")
+                .logoutSuccessUrl("/")
                 .and().exceptionHandling()
-                .accessDeniedPage("/app/error");
+                .accessDeniedPage("/");
 
 
     }
