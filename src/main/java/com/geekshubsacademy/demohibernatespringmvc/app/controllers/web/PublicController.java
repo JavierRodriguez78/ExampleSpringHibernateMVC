@@ -16,4 +16,14 @@ public class PublicController {
         mav.setViewName("custom-login");
         return mav;
     }
+
+    @GetMapping("/unathorizedpage")
+    public String fuera(){
+        return "/unathorizedpage";
+    }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "logout";
+    }
 }

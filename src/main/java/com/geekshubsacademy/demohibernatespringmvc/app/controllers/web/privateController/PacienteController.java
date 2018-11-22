@@ -1,4 +1,4 @@
-package com.geekshubsacademy.demohibernatespringmvc.app.controllers.web;
+package com.geekshubsacademy.demohibernatespringmvc.app.controllers.web.privateController;
 
 import com.geekshubsacademy.demohibernatespringmvc.app.components.PacientesComponent;
 import com.geekshubsacademy.demohibernatespringmvc.domain.entities.Pacientes;
@@ -19,14 +19,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+
 @Controller
 @RequestMapping("app/secure")
 @SessionAttributes("paciente")
-public class PrivateController {
+public class PacienteController {
+
+    private static final Log logger = LogFactory.getLog("PacienteController.class");
     @Autowired
     private PacientesComponent pacientesComponent;
 
-    private static final Log logger = LogFactory.getLog("PrivateController.class");
+
     @GetMapping("/home")
     public ModelAndView home(){
         ModelAndView mv = new ModelAndView("index");

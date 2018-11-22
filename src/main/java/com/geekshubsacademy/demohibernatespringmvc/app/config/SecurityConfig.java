@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers("/app/secure/**")
-                .hasAnyRole("PEPE")
+                .hasAnyRole("DOCTOR, ADMIN")
                 .and().formLogin()
                 .loginPage("/")
                 .loginProcessingUrl("/app-login")
@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/app-logout")
                 .logoutSuccessUrl("/")
                 .and().exceptionHandling()
-                .accessDeniedPage("/");
+                .accessDeniedPage("/unathorizedpage");
 
 
     }
